@@ -1,12 +1,15 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كراسة المواطنة الرقمية</title>
+    <!-- مكتبة Tailwind CSS للتنسيق -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تضمين الخطوط -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #0f172a;   /* Slate 900 */
@@ -22,6 +25,7 @@
             background-color: #e2e8f0;
             margin: 0;
             padding: 0;
+            /* إجبار المتصفحات على طباعة الألوان والخلفيات */
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
@@ -30,32 +34,50 @@
             font-family: 'Cairo', sans-serif;
         }
 
-        /* A4 Page Setup Strict Canvas */
+        /* تجهيز الصفحة (Canvas) لتكون مطابقة لـ A4 بدقة
+           عرض 210 ملم وطول 297 ملم
+        */
         .a4-page {
             width: 210mm;
-            height: 297mm; /* Fixed A4 height */
+            height: 297mm;
             background: white;
             margin: 20px auto;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             position: relative;
-            overflow: hidden; /* Prevents spilling to next page */
+            /* منع خروج أي محتوى عن حجم الورقة */
+            overflow: hidden; 
             box-sizing: border-box;
             page-break-after: always;
             page-break-inside: avoid;
         }
 
+        /* إعدادات الطباعة الحقيقية */
         @media print {
-            body { background: white; margin: 0; }
-            .no-print { display: none !important; }
+            /* إعداد حجم الورقة للطباعة ليكون A4 */
+            @page {
+                size: A4 portrait;
+                margin: 0; /* إزالة هوامش المتصفح الافتراضية */
+            }
+            body { 
+                background: white; 
+                margin: 0; 
+                padding: 0;
+            }
+            .no-print { 
+                display: none !important; 
+            }
             .a4-page {
                 margin: 0;
                 box-shadow: none;
                 border: none;
                 page-break-after: always;
+                /* في الطباعة نقوم بحذف أي مسافات إضافية */
+                width: 210mm;
+                height: 297mm;
             }
         }
 
-        /* Cover Design */
+        /* تصميم الغلاف */
         .cover-bg {
             background-color: #ffffff;
             padding: 20mm;
@@ -86,7 +108,7 @@
         .s-label { width: 130px; color: var(--secondary); font-weight: 800; font-size: 1.1rem;}
         .s-value { flex: 1; font-weight: 800; font-size: 1.2rem; color: var(--text-dark); }
 
-        /* Worksheet Design */
+        /* تصميم أوراق العمل */
         .worksheet-inner {
             padding: 15mm;
             height: 100%;
@@ -129,7 +151,7 @@
             border-right: 4px solid var(--secondary);
         }
 
-        /* Q & A Layout */
+        /* تنسيق الأسئلة */
         .question-block {
             margin-bottom: 12px;
             padding-right: 10px;
@@ -176,9 +198,9 @@
             margin-top: 10px;
         }
 
-        /* Footer & QR */
+        /* الفوتر ومربع الـ QR */
         .ws-footer {
-            margin-top: auto; /* Pushes footer to bottom within the 297mm boundary */
+            margin-top: auto; /* دفع الفوتر لأسفل الصفحة (داخل إطار الـ 297mm) */
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 20px;
@@ -218,7 +240,7 @@
 </head>
 <body>
 
-    <!-- Floating Action Bar (Hidden in Print) -->
+    <!-- شريط أدوات الطباعة (يختفي عند الطباعة) -->
     <div class="no-print fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-4 rounded-full shadow-2xl border border-slate-200 z-50 flex gap-4 items-center">
         <span class="font-bold text-slate-800">أدوات المعلم:</span>
         <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-bold transition shadow-lg flex items-center gap-2">
@@ -229,12 +251,16 @@
         </button>
     </div>
 
+    <!-- حاوية التطبيق -->
     <div id="app"></div>
 
     <script>
+        // رابط الـ QR Code الخاص بك
         const qrTargetUrl = "https://wappsys.netlify.app";
+        // توليد صورة الـ QR
         const qrCodeImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrTargetUrl)}&color=0f172a`;
 
+        // بيانات الدروس
         const data = [
             {
                 unit: "الوحدة الأولى: الوعي الرقمي",
@@ -298,7 +324,7 @@
             const app = document.getElementById('app');
             let html = '';
 
-            // 1. Cover Page (White Theme, No Footer)
+            // 1. صفحة الغلاف (بيضاء وبدون تذييل)
             html += `
             <div class="a4-page cover-bg">
                 <div class="flex justify-between items-start border-b-2 border-slate-200 pb-6 mb-12">
@@ -339,12 +365,12 @@
             </div>
             `;
 
-            // 2. Worksheets
+            // 2. أوراق العمل
             data.forEach((page, index) => {
                 html += `
                 <div class="a4-page">
                     <div class="worksheet-inner">
-                        <!-- Header -->
+                        <!-- الترويسة -->
                         <div class="ws-header">
                             <div>
                                 <div class="unit-badge">${page.unit}</div>
@@ -353,7 +379,7 @@
                             <div class="font-cairo text-5xl font-black text-slate-200">${String(index + 1).padStart(2, '0')}</div>
                         </div>
 
-                        <!-- Q1: MCQ -->
+                        <!-- السؤال الأول: اختيارات -->
                         <div class="mb-6">
                             <div class="section-title">
                                 <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
@@ -373,7 +399,7 @@
                             `).join('')}
                         </div>
 
-                        <!-- Q2: True/False -->
+                        <!-- السؤال الثاني: صح وخطأ -->
                         <div class="mb-6">
                             <div class="section-title">
                                 <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
@@ -389,7 +415,7 @@
                             </div>
                         </div>
 
-                        <!-- Q3: Critical Thinking -->
+                        <!-- السؤال الثالث: التفكير الناقد -->
                         <div class="mb-4">
                             <div class="section-title">
                                 <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
@@ -399,7 +425,7 @@
                             <div class="creative-area"></div>
                         </div>
 
-                        <!-- Footer (Summary & Dedicated QR Code) -->
+                        <!-- الفوتر (يحتوي الخلاصة والـ QR Code فقط - بدون تذييلات رقمية) -->
                         <div class="ws-footer">
                             <div class="summary-box">
                                 <div class="font-bold text-sky-700 mb-1 text-sm flex items-center gap-2">
@@ -408,13 +434,13 @@
                                 <p class="text-slate-600 font-bold text-sm leading-relaxed">${page.summary}</p>
                             </div>
                             
-                            <!-- Fixed QR Code Box -->
+                            <!-- مربع الـ QR -->
                             <div class="qr-box">
                                 <div class="font-cairo font-black text-[12px] text-slate-800 mb-1 leading-tight">اختبر معلوماتك</div>
                                 <div class="qr-placeholder">
                                     <img src="${qrCodeImageSrc}" alt="QR Code" class="w-[70px] h-[70px]">
                                 </div>
-                                <div class="font-bold text-[10px] text-slate-500 bg-slate-100 rounded py-1">امسح الرمز للتحدي</div>
+                                <div class="font-bold text-[10px] text-slate-500 bg-slate-100 rounded py-1">امسح الرمز</div>
                             </div>
                         </div>
                     </div>
@@ -425,11 +451,10 @@
             app.innerHTML = html;
         }
 
-        // Initialize App
+        // تشغيل التطبيق عند التحميل
         window.onload = renderApp;
     </script>
 </body>
 </html>
-
 
 ```
