@@ -1,123 +1,116 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كراسة المواطنة الرقمية</title>
-    <!-- مكتبة Tailwind CSS للتنسيق -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- تضمين الخطوط -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #0f172a;   /* Slate 900 */
-            --secondary: #0284c7; /* Sky 600 */
-            --accent: #38bdf8;    /* Sky 400 */
-            --bg-light: #f8fafc;  /* Slate 50 */
-            --text-dark: #1e293b; /* Slate 800 */
-            --text-muted: #64748b;/* Slate 500 */
+            --primary-dark: #0f172a;
+            --primary-accent: #0284c7;
+            --light-accent: #38bdf8;
+            --bg-muted: #f8fafc;
+            --text-main: #1e293b;
         }
 
         body {
             font-family: 'Almarai', sans-serif;
-            background-color: #e2e8f0;
+            background-color: #cbd5e1;
             margin: 0;
             padding: 0;
-            /* إجبار المتصفحات على طباعة الألوان والخلفيات */
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+            color: var(--text-main);
         }
 
         h1, h2, h3, .font-cairo {
             font-family: 'Cairo', sans-serif;
         }
 
-        /* تجهيز الصفحة (Canvas) لتكون مطابقة لـ A4 بدقة
-           عرض 210 ملم وطول 297 ملم
-        */
-        .a4-page {
+        /* A4 Canvas Setup */
+        .a4-canvas {
             width: 210mm;
             height: 297mm;
-            background: white;
+            background-color: white;
             margin: 20px auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             position: relative;
-            /* منع خروج أي محتوى عن حجم الورقة */
             overflow: hidden; 
             box-sizing: border-box;
             page-break-after: always;
             page-break-inside: avoid;
         }
 
-        /* إعدادات الطباعة الحقيقية */
         @media print {
-            /* إعداد حجم الورقة للطباعة ليكون A4 */
             @page {
                 size: A4 portrait;
-                margin: 0; /* إزالة هوامش المتصفح الافتراضية */
+                margin: 0; 
             }
             body { 
                 background: white; 
                 margin: 0; 
                 padding: 0;
             }
-            .no-print { 
+            .hide-on-print { 
                 display: none !important; 
             }
-            .a4-page {
+            .a4-canvas {
                 margin: 0;
                 box-shadow: none;
                 border: none;
-                page-break-after: always;
-                /* في الطباعة نقوم بحذف أي مسافات إضافية */
                 width: 210mm;
                 height: 297mm;
             }
         }
 
-        /* تصميم الغلاف */
-        .cover-bg {
-            background-color: #ffffff;
+        /* Cover Page Styles */
+        .cover-page {
             padding: 20mm;
             display: flex;
             flex-direction: column;
-            border: 15px double var(--primary);
+            border: 15px double var(--primary-dark);
         }
 
-        .title-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .student-card {
-            background: #f8fafc;
+        .info-card {
+            background-color: var(--bg-muted);
             border: 2px dashed #cbd5e1;
             border-radius: 16px;
             padding: 30px;
         }
 
-        .student-row {
+        .info-row {
             display: flex;
             border-bottom: 1px dashed #cbd5e1;
             padding: 15px 0;
+            align-items: center;
         }
-        .student-row:last-child { border: none; padding-bottom: 0; }
-        .s-label { width: 130px; color: var(--secondary); font-weight: 800; font-size: 1.1rem;}
-        .s-value { flex: 1; font-weight: 800; font-size: 1.2rem; color: var(--text-dark); }
+        .info-row:last-child { border: none; padding-bottom: 0; }
+        
+        .info-label { width: 140px; color: var(--primary-accent); font-weight: 800; font-size: 1.2rem;}
+        .info-value { flex: 1; font-weight: 800; font-size: 1.3rem; color: var(--text-main); }
 
-        /* تصميم أوراق العمل */
-        .worksheet-inner {
+        /* Lesson Page Styles */
+        .lesson-page {
             padding: 15mm;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        .ws-header {
-            border-bottom: 4px solid var(--primary);
+        .lesson-header {
+            border-bottom: 4px solid var(--primary-dark);
             padding-bottom: 15px;
             margin-bottom: 25px;
             display: flex;
@@ -125,60 +118,62 @@
             align-items: flex-end;
         }
 
-        .unit-badge {
-            background: var(--bg-light);
-            color: var(--secondary);
+        .unit-tag {
+            background-color: var(--bg-muted);
+            color: var(--primary-accent);
             padding: 6px 16px;
             border-radius: 20px;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             display: inline-block;
             margin-bottom: 8px;
             border: 1px solid #e0f2fe;
         }
 
-        .section-title {
+        .question-section-title {
             display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--text-dark);
+            font-size: 1.15rem;
+            color: var(--text-main);
             margin-bottom: 15px;
-            background: var(--bg-light);
+            background-color: var(--bg-muted);
             padding: 8px 15px;
             border-radius: 8px;
-            border-right: 4px solid var(--secondary);
+            border-right: 4px solid var(--primary-accent);
         }
 
-        /* تنسيق الأسئلة */
-        .question-block {
-            margin-bottom: 12px;
-            padding-right: 10px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .opt-box {
-            border: 1px solid #cbd5e1;
-            padding: 8px 12px;
-            border-radius: 8px;
+        .question-number-badge {
+            background-color: var(--primary-dark);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.9rem;
+        }
+
+        .mcq-container { margin-bottom: 15px; padding-right: 10px; }
+        .mcq-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+        
+        .mcq-option {
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: var(--text-muted);
+            color: #475569;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .opt-circle {
-            width: 14px;
-            height: 14px;
+        .mcq-circle {
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             border: 2px solid #94a3b8;
         }
@@ -186,21 +181,22 @@
         .tf-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 15px;
+            align-items: center;
+            padding: 12px 15px;
             border-bottom: 1px solid #f1f5f9;
         }
 
-        .creative-area {
+        .thinking-box {
             border: 2px dashed #cbd5e1;
-            background: #f8fafc;
+            background-color: var(--bg-muted);
             border-radius: 12px;
             height: 90px;
             margin-top: 10px;
         }
 
-        /* الفوتر ومربع الـ QR */
-        .ws-footer {
-            margin-top: auto; /* دفع الفوتر لأسفل الصفحة (داخل إطار الـ 297mm) */
+        /* Footer & QR Styles */
+        .lesson-footer {
+            margin-top: auto; 
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 20px;
@@ -209,41 +205,47 @@
             border-top: 2px solid #e2e8f0;
         }
 
-        .summary-box {
-            background: #f0f9ff;
+        .summary-card {
+            background-color: #f0f9ff;
             border: 1px solid #bae6fd;
-            padding: 12px 15px;
+            padding: 15px;
             border-radius: 10px;
-            border-right: 4px solid var(--secondary);
+            border-right: 4px solid var(--primary-accent);
         }
 
-        .qr-box {
-            border: 2px solid var(--primary);
+        .qr-widget {
+            border: 2px solid var(--primary-dark);
             border-radius: 12px;
             padding: 10px;
             text-align: center;
-            background: white;
+            background-color: white;
             width: 110px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .qr-placeholder {
+        .qr-image-container {
             width: 80px;
             height: 80px;
-            background: #ffffff;
             margin: 0 auto 5px auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: white;
+        }
+        
+        .qr-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <!-- شريط أدوات الطباعة (يختفي عند الطباعة) -->
-    <div class="no-print fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-4 rounded-full shadow-2xl border border-slate-200 z-50 flex gap-4 items-center">
+    <!-- Floating Print Button (Hidden on Print) -->
+    <div class="hide-on-print fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-4 rounded-full shadow-2xl border border-slate-200 z-50 flex gap-4 items-center">
         <span class="font-bold text-slate-800">أدوات المعلم:</span>
-        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-bold transition shadow-lg flex items-center gap-2">
+        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-bold transition shadow-lg flex items-center gap-2 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v3m4 7v2a1 1 0 01-1 1H9m3-3a1 1 0 011 1v2a1 1 0 01-1 1h-3" />
             </svg>
@@ -251,147 +253,149 @@
         </button>
     </div>
 
-    <!-- حاوية التطبيق -->
-    <div id="app"></div>
+    <div id="workbook-container"></div>
 
     <script>
-        // رابط الـ QR Code الخاص بك
-        const qrTargetUrl = "https://wappsys.netlify.app";
-        // توليد صورة الـ QR
-        const qrCodeImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrTargetUrl)}&color=0f172a`;
+        const myTestUrl = "https://wappsys.netlify.app";
+        // QR Code URL - Ensured it loads correctly
+        const qrCodeImgSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(myTestUrl)}&color=0f172a&bgcolor=ffffff`;
 
-        // بيانات الدروس
-        const data = [
+        const lessonsData = [
             {
-                unit: "الوحدة الأولى: الوعي الرقمي",
-                lesson: "مفهوم المواطنة الرقمية",
-                mcq: [
-                    { q: "ما هو المفهوم الذي يُعبر عن الاستخدام المسؤول للتقنية؟", options: ["الأمن السيبراني", "المواطنة الرقمية", "التجارة الرقمية"] },
-                    { q: "أي من العناصر التالية يهدف لتوفير تكافؤ الفرص التقنية؟", options: ["الوصول الرقمي", "القانون الرقمي", "الصحة الرقمية"] }
+                unitTitle: "الوحدة الأولى: الوعي الرقمي",
+                lessonTitle: "مفهوم المواطنة الرقمية",
+                questionsMCQ: [
+                    { q: "المفهوم الذي يُعبر عن الاستخدام المسؤول والأخلاقي للتقنية هو:", options: ["الأمن السيبراني", "المواطنة الرقمية", "التجارة الرقمية"] },
+                    { q: "أي من العناصر التالية يهدف إلى توفير تكافؤ الفرص في استخدام التكنولوجيا؟", options: ["الوصول الرقمي", "القانون الرقمي", "الصحة الرقمية"] }
                 ],
-                tf: [
-                    "المواطنة الرقمية تقتصر فقط على معرفة كيفية استخدام الحاسب الآلي.",
-                    "المواطن الرقمي الفعال يساهم في بناء مجتمع إيجابي عبر الإنترنت."
+                questionsTF: [
+                    "تقتصر المواطنة الرقمية على معرفة كيفية استخدام أجهزة الحاسب الآلي وتطبيقاته.",
+                    "المواطن الرقمي الفعال يساهم بإيجابية في بناء مجتمع افتراضي آمن ومسؤول."
                 ],
-                thinking: "كيف تسهم المواطنة الرقمية في تحقيق مجتمع آمن وفقاً لرؤية المملكة 2030؟",
-                summary: "المواطنة الرقمية هي مجموعة الضوابط والأعراف التي تحكم السلوك عند استخدام التقنية، لإعداد أفراد واعين ومسؤولين."
+                criticalThinking: "بأسلوبك، كيف تسهم المواطنة الرقمية في تحقيق مجتمع آمن وفقاً لتطلعات رؤية المملكة 2030؟",
+                lessonSummary: "المواطنة الرقمية هي مجموعة الضوابط والأعراف التي تحكم السلوك عند استخدام التقنية، بهدف إعداد أفراد واعين ومسؤولين قادرين على المشاركة بفعالية في المجتمع الرقمي."
             },
             {
-                unit: "الوحدة الثانية: الهوية والبصمة",
-                lesson: "إدارة الهوية الرقمية",
-                mcq: [
-                    { q: "الهوية الرقمية تعني:", options: ["الاسم الحقيقي فقط", "بياناتك ومعلوماتك عبر الإنترنت", "رقم الهوية الوطنية"] },
-                    { q: "لبناء هوية رقمية إيجابية، يُنصح بـ:", options: ["استخدام أسماء وهمية", "نشر الإنجازات بمهنية", "التفاعل مع الحسابات المسيئة"] }
+                unitTitle: "الوحدة الثانية: الهوية والبصمة",
+                lessonTitle: "إدارة الهوية الرقمية",
+                questionsMCQ: [
+                    { q: "الهوية الرقمية للفرد تعني:", options: ["اسمه الحقيقي فقط", "مجموعة بياناته ومعلوماته عبر الإنترنت", "رقم هويته الوطنية"] },
+                    { q: "لبناء هوية رقمية إيجابية واحترافية، يُنصح بـ:", options: ["استخدام أسماء وهمية", "نشر الإنجازات بمهنية", "التفاعل مع الحسابات المسيئة"] }
                 ],
-                tf: [
-                    "الهوية الرقمية لا تؤثر على حياتك الواقعية أو مستقبلك المهني.",
-                    "من المهم الفصل بين الحسابات الشخصية والحسابات المهنية."
+                questionsTF: [
+                    "الهوية الرقمية لا تؤثر إطلاقاً على حياتك الواقعية أو فرص قبولك الوظيفي.",
+                    "يُفضل دائماً الفصل بين الحسابات الشخصية الخاصة والحسابات المهنية."
                 ],
-                thinking: "لو كنت مدير توظيف، ما الانطباع الذي ستأخذه عن شخص يمتلك هوية رقمية سلبية؟",
-                summary: "الهوية الرقمية هي الطريقة التي يراك بها العالم الافتراضي. بناء هوية احترافية يعزز فرصك المستقبلية ويحمي سمعتك."
+                criticalThinking: "لو كنت مسؤول توظيف في شركة كبرى، ما الانطباع الذي ستأخذه عن متقدم يمتلك بصمة رقمية مليئة بالمحتوى غير اللائق؟",
+                lessonSummary: "الهوية الرقمية هي الطريقة التي يراك بها العالم الافتراضي. بناء هوية احترافية وإيجابية يعزز فرصك المستقبلية ويحمي سمعتك الرقمية على المدى الطويل."
             },
             {
-                unit: "الوحدة الثالثة: الأخلاقيات",
-                lesson: "الإتيكيت الرقمي والتواصل",
-                mcq: [
-                    { q: "الإتيكيت الرقمي يُعنى بـ:", options: ["حماية كلمات المرور", "معايير السلوك عند التواصل", "حقوق الملكية الفكرية"] },
-                    { q: "عند كتابة رسالة بريد إلكتروني رسمية، يجب:", options: ["استخدام رموز كثيرة", "كتابة عنوان واضح للموضوع", "كتابة النص باللون الأحمر"] }
+                unitTitle: "الوحدة الثالثة: الأخلاقيات والمسؤولية",
+                lessonTitle: "الإتيكيت الرقمي والتواصل",
+                questionsMCQ: [
+                    { q: "الإتيكيت الرقمي يُعنى بشكل أساسي بـ:", options: ["حماية كلمات المرور", "معايير السلوك عند التواصل", "حقوق الملكية الفكرية"] },
+                    { q: "عند كتابة رسالة بريد إلكتروني رسمية (إيميل)، يجب عليك:", options: ["استخدام رموز كثيرة", "كتابة عنوان واضح للموضوع", "كتابة النص بألوان فاقعة"] }
                 ],
-                tf: [
-                    "التنمر الإلكتروني أقل ضرراً من التنمر الواقعي لأنه يحدث عبر الشاشات.",
-                    "احترام آراء الآخرين والاختلاف معهم بأدب هو من صميم الإتيكيت الرقمي."
+                questionsTF: [
+                    "التنمر الإلكتروني يعتبر أقل ضرراً من التنمر الواقعي لأنه يحدث عبر الشاشات فقط.",
+                    "احترام آراء الآخرين والاختلاف معهم بأدب يُعد من صميم الإتيكيت الرقمي."
                 ],
-                thinking: "كيف تتصرف إذا تعرض أحد زملائك للتنمر الإلكتروني في مجموعة الواتساب؟",
-                summary: "الإتيكيت الرقمي هو تطبيق للأخلاق الحميدة في العالم الافتراضي ويشمل احترام الآخرين واختيار الكلمات بعناية."
+                criticalThinking: "كيف تتصرف بمسؤولية إذا تعرض أحد زملائك للتنمر الإلكتروني في مجموعة تواصل (مثل واتساب)؟",
+                lessonSummary: "الإتيكيت الرقمي هو تطبيق لمكارم الأخلاق في العالم الافتراضي، ويشمل احترام الآخرين، اختيار الكلمات بعناية، والتواصل بمهنية في جميع المنصات الرقمية."
             },
             {
-                unit: "الوحدة الرابعة: الأمن والخصوصية",
-                lesson: "الأمن السيبراني والمخاطر",
-                mcq: [
-                    { q: "التصيد الاحتيالي (Phishing) يهدف إلى:", options: ["تسريع الجهاز", "سرقة البيانات الحساسة", "تنظيف الفيروسات"] },
-                    { q: "للحماية من البرمجيات الضارة، يجب:", options: ["تحديث نظام التشغيل", "فتح جميع الروابط", "إيقاف جدار الحماية"] }
+                unitTitle: "الوحدة الرابعة: الأمن والخصوصية",
+                lessonTitle: "الأمن السيبراني والمخاطر",
+                questionsMCQ: [
+                    { q: "هجوم التصيد الاحتيالي (Phishing) يهدف عادةً إلى:", options: ["تسريع الجهاز", "سرقة البيانات الحساسة", "حذف الفيروسات"] },
+                    { q: "للحماية من البرمجيات الضارة (Malware)، من الضروري:", options: ["تحديث نظام التشغيل بانتظام", "فتح جميع الروابط", "إيقاف جدار الحماية"] }
                 ],
-                tf: [
-                    "كلمة المرور القوية يجب أن تحتوي على أحرف كبيرة وصغيرة وأرقام.",
-                    "استخدام شبكات Wi-Fi العامة يُعد آمناً تماماً لإجراء المعاملات البنكية."
+                questionsTF: [
+                    "لضمان أمان حساباتك، يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام ورموز.",
+                    "استخدام شبكات (Wi-Fi) العامة المفتوحة يُعد آمناً تماماً لإجراء المعاملات البنكية."
                 ],
-                thinking: "تلقيت رسالة نصية تدعي أنها من بنكك تطلب تحديث بياناتك عبر رابط. ما الإجراء الصحيح؟",
-                summary: "الأمن السيبراني هو ممارسة حماية الأنظمة. يتطلب وعياً بأساليب الاحتيال واستخدام كلمات مرور قوية ومصادقة ثنائية."
+                criticalThinking: "تلقيت رسالة نصية تدعي أنها من البنك وتطلب منك تحديث بياناتك عبر رابط مرفق. ما هو الإجراء الصحيح الذي ستتخذه؟",
+                lessonSummary: "الأمن السيبراني هو ممارسة حماية الأنظمة والشبكات. يتطلب ذلك وعياً بأساليب الاحتيال، واستخدام كلمات مرور قوية، وتفعيل المصادقة الثنائية (2FA)."
             }
         ];
 
-        function renderApp() {
-            const app = document.getElementById('app');
-            let html = '';
+        function renderWorkbook() {
+            const container = document.getElementById('workbook-container');
+            let contentHTML = '';
 
-            // 1. صفحة الغلاف (بيضاء وبدون تذييل)
-            html += `
-            <div class="a4-page cover-bg">
+            // 1. Cover Page
+            contentHTML += `
+            <div class="a4-canvas cover-page">
                 <div class="flex justify-between items-start border-b-2 border-slate-200 pb-6 mb-12">
-                    <div class="text-right text-slate-600 font-bold leading-relaxed">
+                    <div class="text-right text-slate-600 font-bold leading-relaxed text-lg">
                         المملكة العربية السعودية<br>
                         وزارة التعليم<br>
-                        <span class="text-slate-900 text-2xl font-black mt-2 inline-block">ثانوية سهيل بن عمرو</span>
+                        <span class="text-slate-900 text-3xl font-black mt-2 inline-block font-cairo">ثانوية سهيل بن عمرو</span>
                     </div>
                     <div class="font-cairo text-2xl font-black border-2 border-slate-800 px-6 py-2 rounded-lg text-slate-800 tracking-wide bg-slate-50">
                         رؤية VISION 2030
                     </div>
                 </div>
 
-                <div class="text-center w-full flex-grow flex flex-col justify-center">
+                <div class="text-center w-full flex-grow flex flex-col justify-center items-center">
                     <div class="inline-block bg-sky-600 text-white font-bold px-8 py-2 rounded-full mb-8 text-xl transform -skew-x-12 shadow-sm">
                         <span class="inline-block transform skew-x-12">نظام المسارات - السنة الثالثة</span>
                     </div>
-                    <h1 class="font-cairo text-6xl md:text-7xl font-black mb-6 title-gradient drop-shadow-sm leading-tight">
+                    
+                    <h1 class="font-cairo text-6xl md:text-7xl font-black mb-6 text-gradient drop-shadow-sm leading-tight">
                         كراسة الإنجاز<br>والمواطنة الرقمية
                     </h1>
+                    
                     <p class="text-sky-700 text-2xl font-bold mb-16">أوراق عمل تفاعلية • تقييمات • مهارات التفكير العليا</p>
 
-                    <div class="student-card max-w-2xl mx-auto text-right shadow-sm">
-                        <div class="student-row">
-                            <div class="s-label">اسم الطالب:</div>
-                            <div class="s-value"></div>
+                    <div class="info-card w-full max-w-2xl text-right shadow-sm">
+                        <div class="info-row">
+                            <div class="info-label">اسم الطالب:</div>
+                            <div class="info-value"></div>
                         </div>
-                        <div class="student-row">
-                            <div class="s-label">الشعبة/المسار:</div>
-                            <div class="s-value"></div>
+                        <div class="info-row">
+                            <div class="info-label">الشعبة/المسار:</div>
+                            <div class="info-value"></div>
                         </div>
-                        <div class="student-row">
-                            <div class="s-label">المعلم:</div>
-                            <div class="s-value">أ. سليمان الحسني</div>
+                        <div class="info-row">
+                            <div class="info-label">المعلم:</div>
+                            <div class="info-value">أ. سليمان الحسني</div>
                         </div>
                     </div>
                 </div>
             </div>
             `;
 
-            // 2. أوراق العمل
-            data.forEach((page, index) => {
-                html += `
-                <div class="a4-page">
-                    <div class="worksheet-inner">
-                        <!-- الترويسة -->
-                        <div class="ws-header">
+            // 2. Worksheets
+            lessonsData.forEach((lesson, idx) => {
+                const pageNumber = String(idx + 1).padStart(2, '0');
+
+                contentHTML += `
+                <div class="a4-canvas">
+                    <div class="lesson-page">
+                        
+                        <!-- Header -->
+                        <div class="lesson-header">
                             <div>
-                                <div class="unit-badge">${page.unit}</div>
-                                <h2 class="font-cairo text-3xl font-black text-slate-900">${page.lesson}</h2>
+                                <div class="unit-tag">${lesson.unitTitle}</div>
+                                <h2 class="font-cairo text-3xl font-black text-slate-900">${lesson.lessonTitle}</h2>
                             </div>
-                            <div class="font-cairo text-5xl font-black text-slate-200">${String(index + 1).padStart(2, '0')}</div>
+                            <div class="font-cairo text-5xl font-black text-slate-200">${pageNumber}</div>
                         </div>
 
-                        <!-- السؤال الأول: اختيارات -->
+                        <!-- MCQ Section -->
                         <div class="mb-6">
-                            <div class="section-title">
-                                <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+                            <div class="question-section-title">
+                                <span class="question-number-badge">1</span>
                                 اختر الإجابة الصحيحة:
                             </div>
-                            ${page.mcq.map((q, i) => `
-                                <div class="question-block">
-                                    <p class="font-bold text-slate-800 mb-2">${i+1}. ${q.q}</p>
-                                    <div class="options-grid">
-                                        ${q.options.map(opt => `
-                                            <div class="opt-box">
-                                                <div class="opt-circle"></div> ${opt}
+                            ${lesson.questionsMCQ.map((mcq, qIdx) => `
+                                <div class="mcq-container">
+                                    <p class="font-bold text-slate-800 mb-2">${qIdx + 1}. ${mcq.q}</p>
+                                    <div class="mcq-options">
+                                        ${mcq.options.map(opt => `
+                                            <div class="mcq-option">
+                                                <div class="mcq-circle"></div> ${opt}
                                             </div>
                                         `).join('')}
                                     </div>
@@ -399,62 +403,62 @@
                             `).join('')}
                         </div>
 
-                        <!-- السؤال الثاني: صح وخطأ -->
+                        <!-- True/False Section -->
                         <div class="mb-6">
-                            <div class="section-title">
-                                <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+                            <div class="question-section-title">
+                                <span class="question-number-badge">2</span>
                                 ضع علامة (✓) أو (✗):
                             </div>
                             <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
-                                ${page.tf.map((q, i) => `
+                                ${lesson.questionsTF.map((tfQ, tfIdx) => `
                                     <div class="tf-row">
-                                        <div class="font-bold text-slate-700">${i+1}. ${q}</div>
-                                        <div class="font-cairo font-black text-slate-300 tracking-widest">( &nbsp;&nbsp;&nbsp; )</div>
+                                        <div class="font-bold text-slate-700 text-[1.05rem]">${tfIdx + 1}. ${tfQ}</div>
+                                        <div class="font-cairo font-black text-slate-300 tracking-widest text-lg">( &nbsp;&nbsp;&nbsp; )</div>
                                     </div>
                                 `).join('')}
                             </div>
                         </div>
 
-                        <!-- السؤال الثالث: التفكير الناقد -->
+                        <!-- Critical Thinking Section -->
                         <div class="mb-4">
-                            <div class="section-title">
-                                <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
-                                التفكير الناقد:
+                            <div class="question-section-title">
+                                <span class="question-number-badge">3</span>
+                                التفكير الناقد والمناقشة:
                             </div>
-                            <p class="font-bold text-slate-700 text-sm mb-2 px-2">${page.thinking}</p>
-                            <div class="creative-area"></div>
+                            <p class="font-bold text-slate-700 text-base mb-2 px-2">${lesson.criticalThinking}</p>
+                            <div class="thinking-box"></div>
                         </div>
 
-                        <!-- الفوتر (يحتوي الخلاصة والـ QR Code فقط - بدون تذييلات رقمية) -->
-                        <div class="ws-footer">
-                            <div class="summary-box">
-                                <div class="font-bold text-sky-700 mb-1 text-sm flex items-center gap-2">
-                                    <span>💡</span> خلاصة الدرس والأهداف:
+                        <!-- Footer -->
+                        <div class="lesson-footer">
+                            <div class="summary-card">
+                                <div class="font-bold text-sky-700 mb-2 text-base flex items-center gap-2">
+                                    <span class="text-xl">💡</span> خلاصة الدرس والأهداف:
                                 </div>
-                                <p class="text-slate-600 font-bold text-sm leading-relaxed">${page.summary}</p>
+                                <p class="text-slate-600 font-bold text-[0.95rem] leading-relaxed">${lesson.lessonSummary}</p>
                             </div>
                             
-                            <!-- مربع الـ QR -->
-                            <div class="qr-box">
-                                <div class="font-cairo font-black text-[12px] text-slate-800 mb-1 leading-tight">اختبر معلوماتك</div>
-                                <div class="qr-placeholder">
-                                    <img src="${qrCodeImageSrc}" alt="QR Code" class="w-[70px] h-[70px]">
+                            <div class="qr-widget">
+                                <div class="font-cairo font-black text-[12px] text-slate-800 mb-2 leading-tight">اختبر معلوماتك</div>
+                                <div class="qr-image-container">
+                                    <img src="${qrCodeImgSrc}" alt="QR Code" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg'">
                                 </div>
-                                <div class="font-bold text-[10px] text-slate-500 bg-slate-100 rounded py-1">امسح الرمز</div>
+                                <div class="font-bold text-[10px] text-slate-500 bg-slate-100 rounded py-1 mt-1">امسح الرمز للتحدي</div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 `;
             });
 
-            app.innerHTML = html;
+            container.innerHTML = contentHTML;
         }
 
-        // تشغيل التطبيق عند التحميل
-        window.onload = renderApp;
+        document.addEventListener('DOMContentLoaded', renderWorkbook);
     </script>
 </body>
 </html>
+
 
 ```
