@@ -17,6 +17,7 @@
             --light-accent: #38bdf8;
             --bg-muted: #f8fafc;
             --text-main: #1e293b;
+            --text-secondary: #475569;
         }
 
         body {
@@ -24,33 +25,40 @@
             background-color: #cbd5e1;
             margin: 0;
             padding: 0;
+            color: var(--text-main);
+            /* إجبار المتصفح على طباعة الألوان بالدقة المطلوبة */
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
-            color: var(--text-main);
         }
 
-        h1, h2, h3, .font-cairo {
+        .font-cairo {
             font-family: 'Cairo', sans-serif;
         }
 
-        /* A4 Canvas Setup */
-        .a4-canvas {
+        /* إعدادات صفحة A4 
+           210mm عرض × 297mm طول
+        */
+        .page {
             width: 210mm;
             height: 297mm;
             background-color: white;
-            margin: 20px auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            margin: 15mm auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden; 
             box-sizing: border-box;
+            padding: 15mm; /* هامش داخلي آمن للمحتوى */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             page-break-after: always;
             page-break-inside: avoid;
         }
 
+        /* الإعدادات الخاصة بالطباعة لتجنب الزوم والاقتطاع */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 0; 
+                margin: 0mm; /* إزالة هوامش المتصفح الافتراضية */
             }
             body { 
                 background: white; 
@@ -60,21 +68,19 @@
             .hide-on-print { 
                 display: none !important; 
             }
-            .a4-canvas {
+            .page {
                 margin: 0;
                 box-shadow: none;
-                border: none;
                 width: 210mm;
                 height: 297mm;
+                page-break-after: always;
             }
         }
 
-        /* Cover Page Styles */
+        /* ================= صفحة الغلاف ================= */
         .cover-page {
             padding: 20mm;
-            display: flex;
-            flex-direction: column;
-            border: 15px double var(--primary-dark);
+            justify-content: center;
         }
 
         .text-gradient {
@@ -86,33 +92,28 @@
         .info-card {
             background-color: var(--bg-muted);
             border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
         }
 
         .info-row {
             display: flex;
             border-bottom: 1px dashed #cbd5e1;
-            padding: 15px 0;
+            padding: 10px 0;
             align-items: center;
         }
         .info-row:last-child { border: none; padding-bottom: 0; }
         
-        .info-label { width: 140px; color: var(--primary-accent); font-weight: 800; font-size: 1.2rem;}
-        .info-value { flex: 1; font-weight: 800; font-size: 1.3rem; color: var(--text-main); }
+        /* أحجام خطوط منطقية للطباعة */
+        .info-label { width: 120px; color: var(--primary-accent); font-weight: 800; font-size: 14pt;}
+        .info-value { flex: 1; font-weight: 800; font-size: 14pt; color: var(--text-main); text-align: left; padding-left:10px; }
 
-        /* Lesson Page Styles */
-        .lesson-page {
-            padding: 15mm;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
+        /* ================= أوراق العمل ================= */
         .lesson-header {
-            border-bottom: 4px solid var(--primary-dark);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            border-bottom: 3px solid var(--primary-dark);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -121,143 +122,150 @@
         .unit-tag {
             background-color: var(--bg-muted);
             color: var(--primary-accent);
-            padding: 6px 16px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 10pt;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             border: 1px solid #e0f2fe;
         }
 
         .question-section-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-weight: 800;
-            font-size: 1.15rem;
+            font-size: 13pt;
             color: var(--text-main);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             background-color: var(--bg-muted);
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             border-right: 4px solid var(--primary-accent);
         }
 
         .question-number-badge {
             background-color: var(--primary-dark);
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 11pt;
         }
 
-        .mcq-container { margin-bottom: 15px; padding-right: 10px; }
-        .mcq-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+        .mcq-container { margin-bottom: 15px; }
+        .mcq-question { font-weight: 700; font-size: 12pt; color: var(--text-main); margin-bottom: 8px; }
+        .mcq-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
         .mcq-option {
             border: 1px solid #cbd5e1;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 11pt;
             font-weight: 700;
-            color: #475569;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .mcq-circle {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             border: 2px solid #94a3b8;
+            background-color: white;
+            flex-shrink: 0;
         }
 
         .tf-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border-bottom: 1px solid #f1f5f9;
         }
+        .tf-question { font-weight: 700; font-size: 12pt; color: var(--text-main); }
+        .tf-brackets { font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 14pt; color: #cbd5e1; letter-spacing: 2px; }
 
         .thinking-box {
             border: 2px dashed #cbd5e1;
             background-color: var(--bg-muted);
-            border-radius: 12px;
-            height: 90px;
-            margin-top: 10px;
+            border-radius: 8px;
+            flex-grow: 1; /* تأخذ المساحة المتبقية بذكاء */
+            min-height: 80px;
+            margin-top: 8px;
         }
 
-        /* Footer & QR Styles */
+        /* ================= الفوتر ومربع الكيو آر كود ================= */
         .lesson-footer {
-            margin-top: auto; 
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 20px;
-            align-items: end;
-            padding-top: 20px;
+            margin-top: auto; /* دفع الفوتر للأسفل */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 15px;
+            padding-top: 15px;
             border-top: 2px solid #e2e8f0;
         }
 
         .summary-card {
             background-color: #f0f9ff;
             border: 1px solid #bae6fd;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             border-right: 4px solid var(--primary-accent);
+            flex: 1;
         }
 
         .qr-widget {
             border: 2px solid var(--primary-dark);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 8px;
             text-align: center;
             background-color: white;
-            width: 110px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            width: 90px;
+            flex-shrink: 0;
         }
 
         .qr-image-container {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 5px auto;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 4px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
         }
         
         .qr-image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
 
-    <!-- Floating Print Button (Hidden on Print) -->
-    <div class="hide-on-print fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-4 rounded-full shadow-2xl border border-slate-200 z-50 flex gap-4 items-center">
-        <span class="font-bold text-slate-800">أدوات المعلم:</span>
-        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-bold transition shadow-lg flex items-center gap-2 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <!-- أداة الطباعة (تختفي عند الطباعة) -->
+    <div class="hide-on-print fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-full shadow-2xl border border-slate-200 z-50 flex gap-4 items-center">
+        <span class="font-bold text-slate-800 text-sm">أدوات المعلم:</span>
+        <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-bold text-sm transition shadow-lg flex items-center gap-2 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v3m4 7v2a1 1 0 01-1 1H9m3-3a1 1 0 011 1v2a1 1 0 01-1 1h-3" />
             </svg>
-            طباعة الكراسة (A4)
+            طباعة الكراسة
         </button>
     </div>
 
+    <!-- الحاوية الأساسية للكراسة -->
     <div id="workbook-container"></div>
 
     <script>
+        // رابط اختبار المعلومات الخاص بك
         const myTestUrl = "https://wappsys.netlify.app";
-        // QR Code URL - Ensured it loads correctly
         const qrCodeImgSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(myTestUrl)}&color=0f172a&bgcolor=ffffff`;
 
         const lessonsData = [
@@ -323,32 +331,32 @@
             const container = document.getElementById('workbook-container');
             let contentHTML = '';
 
-            // 1. Cover Page
+            // ================= بناء الغلاف (بدون إطار وأحجام متناسقة) =================
             contentHTML += `
-            <div class="a4-canvas cover-page">
-                <div class="flex justify-between items-start border-b-2 border-slate-200 pb-6 mb-12">
-                    <div class="text-right text-slate-600 font-bold leading-relaxed text-lg">
+            <div class="page cover-page">
+                <div class="flex justify-between items-start border-b-2 border-slate-200 pb-4 mb-8">
+                    <div class="text-right text-slate-600 font-bold" style="font-size: 12pt; line-height: 1.5;">
                         المملكة العربية السعودية<br>
                         وزارة التعليم<br>
-                        <span class="text-slate-900 text-3xl font-black mt-2 inline-block font-cairo">ثانوية سهيل بن عمرو</span>
+                        <span class="text-slate-900 font-black mt-1 inline-block font-cairo" style="font-size: 16pt;">ثانوية سهيل بن عمرو</span>
                     </div>
-                    <div class="font-cairo text-2xl font-black border-2 border-slate-800 px-6 py-2 rounded-lg text-slate-800 tracking-wide bg-slate-50">
+                    <div class="font-cairo font-black border-2 border-slate-800 px-4 py-1 rounded-md text-slate-800 bg-slate-50" style="font-size: 14pt;">
                         رؤية VISION 2030
                     </div>
                 </div>
 
                 <div class="text-center w-full flex-grow flex flex-col justify-center items-center">
-                    <div class="inline-block bg-sky-600 text-white font-bold px-8 py-2 rounded-full mb-8 text-xl transform -skew-x-12 shadow-sm">
+                    <div class="inline-block bg-sky-600 text-white font-bold px-6 py-1.5 rounded-full mb-6 transform -skew-x-12" style="font-size: 14pt;">
                         <span class="inline-block transform skew-x-12">نظام المسارات - السنة الثالثة</span>
                     </div>
                     
-                    <h1 class="font-cairo text-6xl md:text-7xl font-black mb-6 text-gradient drop-shadow-sm leading-tight">
+                    <h1 class="font-cairo font-black mb-4 text-gradient leading-tight" style="font-size: 38pt;">
                         كراسة الإنجاز<br>والمواطنة الرقمية
                     </h1>
                     
-                    <p class="text-sky-700 text-2xl font-bold mb-16">أوراق عمل تفاعلية • تقييمات • مهارات التفكير العليا</p>
+                    <p class="text-sky-700 font-bold mb-10" style="font-size: 16pt;">أوراق عمل تفاعلية • تقييمات • مهارات التفكير العليا</p>
 
-                    <div class="info-card w-full max-w-2xl text-right shadow-sm">
+                    <div class="info-card w-full max-w-xl text-right">
                         <div class="info-row">
                             <div class="info-label">اسم الطالب:</div>
                             <div class="info-value"></div>
@@ -366,88 +374,86 @@
             </div>
             `;
 
-            // 2. Worksheets
+            // ================= بناء أوراق العمل =================
             lessonsData.forEach((lesson, idx) => {
                 const pageNumber = String(idx + 1).padStart(2, '0');
 
                 contentHTML += `
-                <div class="a4-canvas">
-                    <div class="lesson-page">
-                        
-                        <!-- Header -->
-                        <div class="lesson-header">
-                            <div>
-                                <div class="unit-tag">${lesson.unitTitle}</div>
-                                <h2 class="font-cairo text-3xl font-black text-slate-900">${lesson.lessonTitle}</h2>
-                            </div>
-                            <div class="font-cairo text-5xl font-black text-slate-200">${pageNumber}</div>
+                <div class="page">
+                    
+                    <!-- الترويسة -->
+                    <div class="lesson-header">
+                        <div>
+                            <div class="unit-tag">${lesson.unitTitle}</div>
+                            <h2 class="font-cairo font-black text-slate-900" style="font-size: 20pt; margin: 0;">${lesson.lessonTitle}</h2>
                         </div>
+                        <div class="font-cairo font-black text-slate-200" style="font-size: 32pt; line-height: 1;">${pageNumber}</div>
+                    </div>
 
-                        <!-- MCQ Section -->
-                        <div class="mb-6">
-                            <div class="question-section-title">
-                                <span class="question-number-badge">1</span>
-                                اختر الإجابة الصحيحة:
+                    <!-- الاختيارات -->
+                    <div class="mb-4">
+                        <div class="question-section-title">
+                            <span class="question-number-badge">1</span>
+                            اختر الإجابة الصحيحة:
+                        </div>
+                        ${lesson.questionsMCQ.map((mcq, qIdx) => `
+                            <div class="mcq-container">
+                                <div class="mcq-question">${qIdx + 1}. ${mcq.q}</div>
+                                <div class="mcq-options">
+                                    ${mcq.options.map(opt => `
+                                        <div class="mcq-option">
+                                            <div class="mcq-circle"></div> <span>${opt}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
-                            ${lesson.questionsMCQ.map((mcq, qIdx) => `
-                                <div class="mcq-container">
-                                    <p class="font-bold text-slate-800 mb-2">${qIdx + 1}. ${mcq.q}</p>
-                                    <div class="mcq-options">
-                                        ${mcq.options.map(opt => `
-                                            <div class="mcq-option">
-                                                <div class="mcq-circle"></div> ${opt}
-                                            </div>
-                                        `).join('')}
-                                    </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- الصح والخطأ -->
+                    <div class="mb-4">
+                        <div class="question-section-title">
+                            <span class="question-number-badge">2</span>
+                            ضع علامة (✓) أو (✗):
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                            ${lesson.questionsTF.map((tfQ, tfIdx) => `
+                                <div class="tf-row">
+                                    <div class="tf-question">${tfIdx + 1}. ${tfQ}</div>
+                                    <div class="tf-brackets">( &nbsp;&nbsp;&nbsp; )</div>
                                 </div>
                             `).join('')}
                         </div>
-
-                        <!-- True/False Section -->
-                        <div class="mb-6">
-                            <div class="question-section-title">
-                                <span class="question-number-badge">2</span>
-                                ضع علامة (✓) أو (✗):
-                            </div>
-                            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
-                                ${lesson.questionsTF.map((tfQ, tfIdx) => `
-                                    <div class="tf-row">
-                                        <div class="font-bold text-slate-700 text-[1.05rem]">${tfIdx + 1}. ${tfQ}</div>
-                                        <div class="font-cairo font-black text-slate-300 tracking-widest text-lg">( &nbsp;&nbsp;&nbsp; )</div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <!-- Critical Thinking Section -->
-                        <div class="mb-4">
-                            <div class="question-section-title">
-                                <span class="question-number-badge">3</span>
-                                التفكير الناقد والمناقشة:
-                            </div>
-                            <p class="font-bold text-slate-700 text-base mb-2 px-2">${lesson.criticalThinking}</p>
-                            <div class="thinking-box"></div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="lesson-footer">
-                            <div class="summary-card">
-                                <div class="font-bold text-sky-700 mb-2 text-base flex items-center gap-2">
-                                    <span class="text-xl">💡</span> خلاصة الدرس والأهداف:
-                                </div>
-                                <p class="text-slate-600 font-bold text-[0.95rem] leading-relaxed">${lesson.lessonSummary}</p>
-                            </div>
-                            
-                            <div class="qr-widget">
-                                <div class="font-cairo font-black text-[12px] text-slate-800 mb-2 leading-tight">اختبر معلوماتك</div>
-                                <div class="qr-image-container">
-                                    <img src="${qrCodeImgSrc}" alt="QR Code" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg'">
-                                </div>
-                                <div class="font-bold text-[10px] text-slate-500 bg-slate-100 rounded py-1 mt-1">امسح الرمز للتحدي</div>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <!-- التفكير الناقد -->
+                    <div class="mb-2 flex-grow flex flex-col">
+                        <div class="question-section-title">
+                            <span class="question-number-badge">3</span>
+                            التفكير الناقد والمناقشة:
+                        </div>
+                        <div class="tf-question px-2">${lesson.criticalThinking}</div>
+                        <div class="thinking-box"></div>
+                    </div>
+
+                    <!-- الفوتر -->
+                    <div class="lesson-footer">
+                        <div class="summary-card">
+                            <div class="font-bold text-sky-700 mb-1 flex items-center gap-2" style="font-size: 11pt;">
+                                <span>💡</span> خلاصة الدرس والأهداف:
+                            </div>
+                            <p class="text-slate-600 font-bold m-0" style="font-size: 10pt; line-height: 1.6;">${lesson.lessonSummary}</p>
+                        </div>
+                        
+                        <div class="qr-widget">
+                            <div class="font-cairo font-black text-slate-800 mb-1" style="font-size: 10pt;">اختبر معلوماتك</div>
+                            <div class="qr-image-container">
+                                <img src="${qrCodeImgSrc}" alt="QR Code" onerror="this.style.display='none'">
+                            </div>
+                            <div class="font-bold text-slate-500 bg-slate-100 rounded mt-1" style="font-size: 8pt; padding: 2px 0;">امسح الرمز للتحدي</div>
+                        </div>
+                    </div>
+
                 </div>
                 `;
             });
